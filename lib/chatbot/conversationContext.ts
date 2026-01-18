@@ -2,8 +2,8 @@
 // Tracks conversation history to understand follow-up questions
 // Now with persistent localStorage support!
 
-const STORAGE_KEY = 'irctc_chatbot_context';
-const CHAT_HISTORY_KEY = 'irctc_chat_history';
+const STORAGE_KEY = "irctc_chatbot_context";
+const CHAT_HISTORY_KEY = "irctc_chat_history";
 const MAX_HISTORY_LENGTH = 50; // Store up to 50 messages
 
 export interface ConversationContext {
@@ -11,7 +11,7 @@ export interface ConversationContext {
   lastPNR: string | null;
   lastTrainNumber: string | null;
   lastTopic: string | null; // 'refund', 'booking', 'train', 'tdr', etc.
-  lastData: any; // Last rich content data shown
+  lastData: unknown; // Last rich content data shown
   conversationHistory: Array<{
     userMessage: string;
     intent: string;
@@ -20,7 +20,7 @@ export interface ConversationContext {
 }
 
 // Helper to check if we're in browser environment
-const isBrowser = typeof window !== 'undefined';
+const isBrowser = typeof window !== "undefined";
 
 // Load context from localStorage on initialization
 function loadContextFromStorage(): ConversationContext {
@@ -43,7 +43,7 @@ function loadContextFromStorage(): ConversationContext {
       return parsed;
     }
   } catch (error) {
-    console.error('Failed to load context from storage:', error);
+    console.error("Failed to load context from storage:", error);
   }
 
   return {
@@ -63,7 +63,7 @@ function saveContextToStorage(context: ConversationContext) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(context));
   } catch (error) {
-    console.error('Failed to save context to storage:', error);
+    console.error("Failed to save context to storage:", error);
   }
 }
 
@@ -76,34 +76,34 @@ export function updateContext(
     pnr?: string;
     trainNumber?: string;
     topic?: string;
-    richContent?: any;
-  }
+    richContent?: unknown;
+  },
 ) {
   globalContext.lastIntent = intent;
-  
+
   if (extractedData?.pnr) {
     globalContext.lastPNR = extractedData.pnr;
   }
-  
+
   if (extractedData?.trainNumber) {
     globalContext.lastTrainNumber = extractedData.trainNumber;
   }
-  
+
   if (extractedData?.topic) {
     globalContext.lastTopic = extractedData.topic;
   }
-  
+
   if (extractedData?.richContent) {
     globalContext.lastData = extractedData.richContent;
   }
-  
+
   // Add to history (keep last MAX_HISTORY_LENGTH messages)
   globalContext.conversationHistory.push({
     userMessage,
     intent,
     timestamp: new Date().toISOString(),
   });
-  
+
   if (globalContext.conversationHistory.length > MAX_HISTORY_LENGTH) {
     globalContext.conversationHistory.shift();
   }
@@ -125,7 +125,7 @@ export function clearContext() {
     lastData: null,
     conversationHistory: [],
   };
-  
+
   // Clear from localStorage
   if (isBrowser) {
     localStorage.removeItem(STORAGE_KEY);
@@ -141,54 +141,54 @@ export function isFollowUpQuestion(message: string): boolean {
     /\b(this|that|it)\b/i,
     /^(ok|okay|yes|no|sure)\b/i,
   ];
-  
-  return followUpPatterns.some(pattern => pattern.test(message));
+
+  return followUpPatterns.some((pattern) => pattern.test(message));
 }
 
 // Get context-aware suggestions for ambiguous questions
 export function getContextualIntent(message: string): string | null {
   const context = getContext();
   const normalizedMessage = message.toLowerCase().trim();
-  
+
   // Handle "why" questions based on last topic
   if (/\b(why|reason|how come)\b/i.test(normalizedMessage)) {
-    if (context.lastTopic === 'refund') {
-      return 'refund_explanation';
+    if (context.lastTopic === "refund") {
+      return "refund_explanation";
     }
-    if (context.lastTopic === 'train') {
-      return 'train_delay_explanation';
+    if (context.lastTopic === "train") {
+      return "train_delay_explanation";
     }
-    if (context.lastTopic === 'tdr') {
-      return 'tdr_explanation';
+    if (context.lastTopic === "tdr") {
+      return "tdr_explanation";
     }
   }
-  
+
   // Handle "how" questions
   if (/\b(how|process|steps)\b/i.test(normalizedMessage)) {
-    if (context.lastTopic === 'refund') {
-      return 'refund_process_explanation';
+    if (context.lastTopic === "refund") {
+      return "refund_process_explanation";
     }
-    if (context.lastTopic === 'tdr') {
-      return 'tdr_filing';
+    if (context.lastTopic === "tdr") {
+      return "tdr_filing";
     }
   }
-  
+
   // Handle "what" questions
   if (/\b(what|which|tell me)\b/i.test(normalizedMessage)) {
-    if (context.lastTopic === 'refund') {
-      return 'refund_rules_explanation';
+    if (context.lastTopic === "refund") {
+      return "refund_rules_explanation";
     }
   }
-  
+
   // Handle affirmative responses (yes, ok, sure)
   if (/^(yes|yeah|sure|ok|okay|yep)\b/i.test(normalizedMessage)) {
-    if (context.lastIntent === 'tdr_filing') {
-      return 'tdr_filing_continue';
+    if (context.lastIntent === "tdr_filing") {
+      return "tdr_filing_continue";
     }
-    if (context.lastIntent === 'refund_calculator') {
-      return 'refund_calculator';
+    if (context.lastIntent === "refund_calculator") {
+      return "refund_calculator";
     }
   }
-  
+
   return null;
 }

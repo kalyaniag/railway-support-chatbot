@@ -1,8 +1,8 @@
-import { Intent } from '@/types/chat';
+import { Intent } from "@/types/chat";
 
 export const intents: Intent[] = [
   {
-    name: 'greeting',
+    name: "greeting",
     patterns: [
       /^(hi|hello|hey|namaste|good morning|good afternoon|good evening)/i,
       /^(hi there|hello there)/i,
@@ -12,10 +12,15 @@ export const intents: Intent[] = [
       "Namaste! I'm Disha, your IRCTC virtual assistant. How can I help you with your train booking or travel queries?",
       "Hi there! Welcome to Indian Railways support. What would you like to know today?",
     ],
-    followUp: ["Check PNR Status", "Find Trains", "Cancellation Policy", "Tatkal Booking"],
+    followUp: [
+      "Check PNR Status",
+      "Find Trains",
+      "Cancellation Policy",
+      "Tatkal Booking",
+    ],
   },
   {
-    name: 'pnr_status',
+    name: "pnr_status",
     patterns: [
       /\b(pnr|ticket)\s*(status|check|number|tracking)\b/i,
       /\bcheck.*pnr\b/i,
@@ -29,7 +34,7 @@ export const intents: Intent[] = [
     ],
   },
   {
-    name: 'train_search',
+    name: "train_search",
     patterns: [
       /\b(train|trains).*\b(between|from|to|search|find)\b/i,
       /\bfind.*train\b/i,
@@ -44,7 +49,7 @@ export const intents: Intent[] = [
     ],
   },
   {
-    name: 'ticket_booking',
+    name: "ticket_booking",
     patterns: [
       /\b(book|booking|reserve|reservation).*\b(ticket|train)\b/i,
       /\b(ticket|train).*\b(book|booking|reserve)\b/i,
@@ -57,7 +62,7 @@ export const intents: Intent[] = [
     multiStep: true,
   },
   {
-    name: 'ticket_booking_with_details',
+    name: "ticket_booking_with_details",
     patterns: [
       /\b(book|booking).*\b(from|to)\b.*\b(to|from)\b/i,
       /\b(ticket|train).*\bfrom\b.*\bto\b/i,
@@ -66,7 +71,7 @@ export const intents: Intent[] = [
     responses: [],
   },
   {
-    name: 'cancellation',
+    name: "cancellation",
     patterns: [
       /\b(cancel|cancellation|refund).*\b(ticket|booking|policy)\b/i,
       /\bhow.*cancel\b/i,
@@ -79,7 +84,7 @@ export const intents: Intent[] = [
     ],
   },
   {
-    name: 'tatkal_booking',
+    name: "tatkal_booking",
     patterns: [
       /\btatkal\b/i,
       /\bemergency.*ticket\b/i,
@@ -92,7 +97,7 @@ export const intents: Intent[] = [
     ],
   },
   {
-    name: 'fare_info',
+    name: "fare_info",
     patterns: [
       /\b(fare|price|cost|charges|ticket.*price)\b/i,
       /\bhow.*much\b/i,
@@ -103,7 +108,7 @@ export const intents: Intent[] = [
     ],
   },
   {
-    name: 'food_ordering',
+    name: "food_ordering",
     patterns: [
       /\bfood\b.*\b(order|ordering|train)\b/i,
       /\border.*food\b/i,
@@ -115,7 +120,7 @@ export const intents: Intent[] = [
     ],
   },
   {
-    name: 'station_code',
+    name: "station_code",
     patterns: [
       /\bstation.*code\b/i,
       /\bcode.*station\b/i,
@@ -127,7 +132,7 @@ export const intents: Intent[] = [
     ],
   },
   {
-    name: 'refund_status',
+    name: "refund_status",
     patterns: [
       /\brefund.*status\b/i,
       /\bcheck.*refund\b/i,
@@ -140,23 +145,17 @@ export const intents: Intent[] = [
     multiStep: true,
   },
   {
-    name: 'refund_e_ticket',
-    patterns: [
-      /\be-ticket.*refund\b/i,
-      /\bonline.*ticket.*refund\b/i,
-    ],
+    name: "refund_e_ticket",
+    patterns: [/\be-ticket.*refund\b/i, /\bonline.*ticket.*refund\b/i],
     responses: [],
   },
   {
-    name: 'refund_counter_ticket',
-    patterns: [
-      /\bcounter.*ticket.*refund\b/i,
-      /\boffline.*ticket.*refund\b/i,
-    ],
+    name: "refund_counter_ticket",
+    patterns: [/\bcounter.*ticket.*refund\b/i, /\boffline.*ticket.*refund\b/i],
     responses: [],
   },
   {
-    name: 'help',
+    name: "help",
     patterns: [
       /\bhelp\b/i,
       /\bwhat.*can.*you.*do\b/i,
@@ -169,7 +168,7 @@ export const intents: Intent[] = [
     ],
   },
   {
-    name: 'account_issues',
+    name: "account_issues",
     patterns: [
       /\b(login|sign.*in|account|password|username)\b/i,
       /\bcannot.*login\b/i,
@@ -181,7 +180,7 @@ export const intents: Intent[] = [
     ],
   },
   {
-    name: 'payment_issues',
+    name: "payment_issues",
     patterns: [
       /\bpayment.*fail\b/i,
       /\bmoney.*deduct\b/i,
@@ -195,7 +194,7 @@ export const intents: Intent[] = [
   },
   // NEW INTELLIGENT FEATURES
   {
-    name: 'pnr_check_detailed',
+    name: "pnr_check_detailed",
     patterns: [
       /\b(check|show|find|get|fetch|status|details).*pnr\b/i,
       /\bpnr.*(check|status|details|show|info)\b/i,
@@ -207,7 +206,7 @@ export const intents: Intent[] = [
     requiresPNR: true,
   },
   {
-    name: 'train_status_check',
+    name: "train_status_check",
     patterns: [
       /\b(train|my train).*\b(cancel|cancelled|running|delay|delayed|status|where)\b/i,
       /\bis.*train.*\b(cancel|running|on time|delayed)\b/i,
@@ -220,7 +219,7 @@ export const intents: Intent[] = [
     requiresTrainNumber: true,
   },
   {
-    name: 'refund_status_check',
+    name: "refund_status_check",
     patterns: [
       /\b(refund|money|amount).*\b(status|where|track|check|for)\b/i,
       /\bwhere.*is.*(refund|money)\b/i,
@@ -233,7 +232,7 @@ export const intents: Intent[] = [
     requiresPNR: true,
   },
   {
-    name: 'refund_calculator',
+    name: "refund_calculator",
     patterns: [
       /\b(calculate|calculator|how much).*refund\b/i,
       /\brefund.*(amount|calculate|calculator|how much)\b/i,
@@ -245,7 +244,7 @@ export const intents: Intent[] = [
     requiresCalculation: true,
   },
   {
-    name: 'refund_history',
+    name: "refund_history",
     patterns: [
       /\b(show|view|check|see|display).*(refund|transaction).*(history|list)\b/i,
       /\b(refund|transaction).*(history|list|all|past)\b/i,
@@ -257,7 +256,7 @@ export const intents: Intent[] = [
     showsHistory: true,
   },
   {
-    name: 'tdr_filing',
+    name: "tdr_filing",
     patterns: [
       /\b(file|submit|raise|create|want).*tdr\b/i,
       /\btdr.*(file|filing|how|process|submit)\b/i,
@@ -269,7 +268,7 @@ export const intents: Intent[] = [
     requiresTDRFlow: true,
   },
   {
-    name: 'cancelled_train_refund',
+    name: "cancelled_train_refund",
     patterns: [
       /\btrain.*(cancelled|canceled).*refund\b/i,
       /\b(cancelled|canceled).*train\b/i,
@@ -280,7 +279,7 @@ export const intents: Intent[] = [
     requiresTrainNumber: true,
   },
   {
-    name: 'partial_cancellation',
+    name: "partial_cancellation",
     patterns: [
       /\bpartial.*cancellation\b/i,
       /\bcancel.*\b(some|few|one|two|partial).*passenger\b/i,
@@ -291,7 +290,7 @@ export const intents: Intent[] = [
     ],
   },
   {
-    name: 'alternative_trains',
+    name: "alternative_trains",
     patterns: [
       /\balternative.*train\b/i,
       /\bother.*train\b/i,
@@ -303,7 +302,7 @@ export const intents: Intent[] = [
   },
   // Context-aware follow-up intents
   {
-    name: 'refund_explanation',
+    name: "refund_explanation",
     patterns: [
       /\bwhy.*(refund|rejected|not eligible)\b/i,
       /\breason.*(refund|rejection)\b/i,
@@ -313,7 +312,7 @@ export const intents: Intent[] = [
     ],
   },
   {
-    name: 'refund_rules_explanation',
+    name: "refund_rules_explanation",
     patterns: [
       /\bwhat.*(refund|rule|policy)\b/i,
       /\btell me.*(refund|rule)\b/i,
@@ -323,49 +322,37 @@ export const intents: Intent[] = [
     ],
   },
   {
-    name: 'refund_process_explanation',
-    patterns: [
-      /\bhow.*(refund|process|work)\b/i,
-      /\brefund.*process\b/i,
-    ],
+    name: "refund_process_explanation",
+    patterns: [/\bhow.*(refund|process|work)\b/i, /\brefund.*process\b/i],
     responses: [
       "**How the Refund Process Works:**\n\n**Step 1: Cancellation**\n• Cancel ticket via IRCTC app/website\n• Note the cancellation confirmation\n\n**Step 2: Refund Calculation**\n• System automatically calculates refund\n• Based on ticket type & cancellation time\n• Deducts applicable charges\n\n**Step 3: Processing**\n• Refund request sent to bank\n• Usually takes 7-10 business days\n• Can take up to 15 days for some banks\n\n**Step 4: Credit to Account**\n• Refunded to original payment method\n• Card/UPI/Net Banking\n• You'll receive SMS confirmation\n\n**Track Refund Status:**\n• IRCTC Website → Refund Status\n• Use your PNR number\n• Shows current stage of processing\n\n**If Delayed:**\n• Wait 15 business days\n• Then call 139 or email care@irctc.co.in\n• Keep PNR & transaction ID ready\n\nWould you like to check your refund status now?",
     ],
   },
   {
-    name: 'train_delay_explanation',
-    patterns: [
-      /\bwhy.*(train|delay|cancel)\b/i,
-      /\breason.*(delay|cancel)\b/i,
-    ],
+    name: "train_delay_explanation",
+    patterns: [/\bwhy.*(train|delay|cancel)\b/i, /\breason.*(delay|cancel)\b/i],
     responses: [
       "**Why is your train delayed/cancelled?**\n\nCommon reasons include:\n\n**1. Operational Reasons:**\n• Track maintenance/repair\n• Signal failures\n• Engine/coach technical issues\n• Staff availability\n\n**2. Weather Conditions:**\n• Fog (especially in winter)\n• Heavy rain/floods\n• Landslides in hilly areas\n• Extreme heat affecting tracks\n\n**3. Accidents/Incidents:**\n• Accident on route\n• Security concerns\n• Track obstruction\n\n**4. Priority Trains:**\n• Rajdhani/Shatabdi given priority\n• May cause other trains to wait\n\n**What you can do:**\n• Check live running status regularly\n• If delayed >3 hours, you can file TDR for refund\n• For cancellation, full refund is automatic\n• Keep checking for alternate trains\n\nWould you like me to find alternative trains for your journey?",
     ],
   },
   {
-    name: 'tdr_explanation',
-    patterns: [
-      /\bwhat.*tdr\b/i,
-      /\btdr.*mean\b/i,
-      /\bexplain.*tdr\b/i,
-    ],
+    name: "tdr_explanation",
+    patterns: [/\bwhat.*tdr\b/i, /\btdr.*mean\b/i, /\bexplain.*tdr\b/i],
     responses: [
       "**What is TDR (Ticket Deposit Receipt)?**\n\nTDR is a refund claim system for specific situations where normal cancellation isn't possible or fair.\n\n**When to file TDR:**\n\n✅ **You Should File TDR if:**\n• Train delayed by more than 3 hours\n• AC/services not working during journey\n• Train cancelled by Railways\n• Booked wrong class/date by mistake\n• Medical emergency prevented travel\n• Missed train due to train delay\n• Duplicate/fraudulent booking\n\n❌ **Don't File TDR if:**\n• You voluntarily cancelled (use normal cancellation)\n• You missed train without valid reason\n• Premium Tatkal tickets\n\n**Filing Process:**\n1. Login to IRCTC\n2. Go to 'My Transactions' → 'File TDR'\n3. Select reason & upload proof (if needed)\n4. Submit within time limit\n\n**Time Limits:**\n• Train delay/AC issue: Within 3 days of journey\n• Wrong booking: Within journey date\n• Non-travel: Within 60 days\n\nWould you like me to guide you through filing a TDR?",
     ],
   },
   {
-    name: 'tdr_filing_continue',
-    patterns: [
-      /^(yes|yeah|sure|ok|okay|continue|proceed)\b/i,
-    ],
+    name: "tdr_filing_continue",
+    patterns: [/^(yes|yeah|sure|ok|okay|continue|proceed)\b/i],
     responses: [],
     requiresTDRFlow: true,
   },
 ];
 
 export const fallbackResponses = [
-  "I specialize in IRCTC and Indian Railway services. I can help you with PNR status, train bookings, cancellations, Tatkal rules, and more. Could you ask something related to train travel?",
-  "I'm designed to assist with IRCTC railway queries like ticket booking, PNR checking, fare information, and cancellation policies. How can I help you with your train journey?",
-  "That's a bit outside my railway expertise! I'm here to help with Indian Railways - train schedules, bookings, PNR status, refunds, and travel-related queries. What would you like to know about trains?",
-  "I didn't quite catch that. I'm Disha, your IRCTC assistant, and I can help with:\n• PNR Status\n• Train Search\n• Booking & Cancellation\n• Tatkal Rules\n• Fare Info\n• Food Ordering\n\nWhat would you like assistance with?",
+  "I'm **DISHA 2.0**, your IRCTC virtual assistant. I can help with PNR status, train info, bookings, refunds, cancellations, and more. What would you like to know?",
+  "I can assist you with Indian Railways services - ticket booking, PNR status, train schedules, refunds, and travel queries. How can I help?",
+  "I didn't quite catch that. Try asking about:\n- PNR status\n- Train running status\n- How to book tickets\n- Refund queries\n- Cancellation policy",
+  'I\'m here to help with IRCTC services!\n\n**Try:**\n- "Check PNR 1234567890"\n- "Train 12301 status"\n- "How to book ticket?"\n- "Refund policy"',
 ];

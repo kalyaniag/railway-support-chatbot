@@ -1,4 +1,4 @@
-export type MessageRole = 'user' | 'bot';
+export type MessageRole = "user" | "bot";
 
 export interface Message {
   id: string;
@@ -8,9 +8,19 @@ export interface Message {
   streaming?: boolean;
   link?: string;
   richContent?: {
-    type: 'refund-timeline' | 'pnr-details' | 'train-status' | 'refund-status' | 'refund-history' | 'refund-calculator' | 'tdr-form' | 'alternative-trains' | 'tdr-filing';
-    ticketType?: 'e-ticket' | 'counter';
-    data?: any;
+    type:
+      | "refund-timeline"
+      | "pnr-details"
+      | "train-status"
+      | "refund-status"
+      | "refund-history"
+      | "refund-calculator"
+      | "tdr-form"
+      | "alternative-trains"
+      | "tdr-filing"
+      | "ticket-booking";
+    ticketType?: "e-ticket" | "counter";
+    data?: Record<string, unknown>;
   };
 }
 

@@ -9,7 +9,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Disha 2.0 - IRCTC Virtual Assistant",
-  description: "AI-powered support system for Indian Railways and IRCTC services",
+  description:
+    "AI-powered support system for Indian Railways and IRCTC services",
 };
 
 export default function RootLayout({

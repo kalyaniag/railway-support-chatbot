@@ -1,24 +1,58 @@
-'use client';
+"use client";
 
-import { Trash2 } from 'lucide-react';
-import { clearContext } from '@/lib/chatbot/conversationContext';
+import { useState } from "react";
+import { Trash2, X, Check } from "lucide-react";
+import { clearContext } from "@/lib/chatbot/conversationContext";
 
 interface ClearChatButtonProps {
   onClear: () => void;
   messageCount: number;
 }
 
-export default function ClearChatButton({ onClear, messageCount }: ClearChatButtonProps) {
+export default function ClearChatButton({
+  onClear,
+  messageCount,
+}: ClearChatButtonProps) {
+  const [showConfirm, setShowConfirm] = useState(false);
+
   const handleClear = () => {
     if (messageCount === 0) return;
-    
-    if (confirm('🗑️ Clear all chat history?\n\nThis will delete all messages and conversation context. This action cannot be undone.')) {
-      clearContext(); // Clear conversation context
-      onClear(); // Clear messages in UI
-    }
+    setShowConfirm(true);
+  };
+
+  const confirmClear = () => {
+    clearContext(); // Clear conversation context
+    onClear(); // Clear messages in UI
+    setShowConfirm(false);
+  };
+
+  const cancelClear = () => {
+    setShowConfirm(false);
   };
 
   if (messageCount === 0) return null;
+
+  if (showConfirm) {
+    return (
+      <div className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium bg-red-50 rounded-lg border border-red-200">
+        <span className="text-red-700">Clear chat?</span>
+        <button
+          onClick={confirmClear}
+          className="p-1 hover:bg-red-100 rounded text-red-600"
+          title="Confirm clear"
+        >
+          <Check className="w-4 h-4" />
+        </button>
+        <button
+          onClick={cancelClear}
+          className="p-1 hover:bg-gray-200 rounded text-gray-600"
+          title="Cancel"
+        >
+          <X className="w-4 h-4" />
+        </button>
+      </div>
+    );
+  }
 
   return (
     <button

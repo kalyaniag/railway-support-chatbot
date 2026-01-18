@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, KeyboardEvent } from 'react';
-import { Send } from 'lucide-react';
+import { useState, KeyboardEvent } from "react";
+import { Send } from "lucide-react";
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
@@ -9,17 +9,17 @@ interface ChatInputProps {
 }
 
 export default function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
 
   const handleSend = () => {
     if (input.trim() && !disabled) {
       onSendMessage(input.trim());
-      setInput('');
+      setInput("");
     }
   };
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSend();
     }

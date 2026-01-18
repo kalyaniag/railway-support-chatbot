@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 type WizardStep = 1 | 2 | 3 | 4;
 
@@ -19,25 +19,25 @@ interface TDRFilingWizardProps {
 export default function TDRFilingWizard({ onSubmit }: TDRFilingWizardProps) {
   const [currentStep, setCurrentStep] = useState<WizardStep>(1);
   const [formData, setFormData] = useState<TDRData>({
-    pnr: '',
-    reason: '',
-    description: '',
-    bankAccount: '',
-    ifscCode: '',
+    pnr: "",
+    reason: "",
+    description: "",
+    bankAccount: "",
+    ifscCode: "",
   });
 
   const tdrReasons = [
-    'Train Cancelled',
-    'Train Delayed (>3 hours)',
-    'Coach Deficiency',
-    'AC Not Working',
-    'No Water/Bedroll',
-    'Ticket Booking Error',
-    'Other',
+    "Train Cancelled",
+    "Train Delayed (>3 hours)",
+    "Coach Deficiency",
+    "AC Not Working",
+    "No Water/Bedroll",
+    "Ticket Booking Error",
+    "Other",
   ];
 
   const updateFormData = (field: keyof TDRData, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const canProceed = () => {
@@ -45,9 +45,11 @@ export default function TDRFilingWizard({ onSubmit }: TDRFilingWizardProps) {
       case 1:
         return formData.pnr.length === 10;
       case 2:
-        return formData.reason !== '' && formData.description.length >= 20;
+        return formData.reason !== "" && formData.description.length >= 20;
       case 3:
-        return formData.bankAccount.length >= 8 && formData.ifscCode.length === 11;
+        return (
+          formData.bankAccount.length >= 8 && formData.ifscCode.length === 11
+        );
       case 4:
         return true;
       default:
@@ -77,11 +79,23 @@ export default function TDRFilingWizard({ onSubmit }: TDRFilingWizardProps) {
     <div className="bg-white rounded-lg border border-blue-200 overflow-hidden">
       <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-4 text-white">
         <div className="flex items-center gap-2 mb-3">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
           </svg>
           <div>
-            <h3 className="font-bold text-lg">File TDR (Ticket Deposit Receipt)</h3>
+            <h3 className="font-bold text-lg">
+              File TDR (Ticket Deposit Receipt)
+            </h3>
             <p className="text-sm text-blue-100">Step-by-step refund claim</p>
           </div>
         </div>
@@ -92,7 +106,7 @@ export default function TDRFilingWizard({ onSubmit }: TDRFilingWizardProps) {
             <div key={step} className="flex items-center flex-1">
               <div
                 className={`h-2 rounded-full flex-1 transition-all ${
-                  step <= currentStep ? 'bg-white' : 'bg-white/30'
+                  step <= currentStep ? "bg-white" : "bg-white/30"
                 }`}
               />
               {step < 4 && <div className="w-1" />}
@@ -115,7 +129,9 @@ export default function TDRFilingWizard({ onSubmit }: TDRFilingWizardProps) {
               <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">
                 1
               </div>
-              <h4 className="font-semibold text-gray-900">Enter Ticket Details</h4>
+              <h4 className="font-semibold text-gray-900">
+                Enter Ticket Details
+              </h4>
             </div>
 
             <div>
@@ -126,7 +142,9 @@ export default function TDRFilingWizard({ onSubmit }: TDRFilingWizardProps) {
                 type="text"
                 maxLength={10}
                 value={formData.pnr}
-                onChange={(e) => updateFormData('pnr', e.target.value.replace(/\D/g, ''))}
+                onChange={(e) =>
+                  updateFormData("pnr", e.target.value.replace(/\D/g, ""))
+                }
                 placeholder="Enter 10-digit PNR"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
@@ -137,10 +155,21 @@ export default function TDRFilingWizard({ onSubmit }: TDRFilingWizardProps) {
 
             <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
               <p className="text-xs text-blue-800 flex items-start gap-2">
-                <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                <svg
+                  className="w-4 h-4 mt-0.5 flex-shrink-0"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                    clipRule="evenodd"
+                  />
                 </svg>
-                <span>TDR must be filed within 72 hours for refund claims. Ensure your PNR is valid.</span>
+                <span>
+                  TDR must be filed within 72 hours for refund claims. Ensure
+                  your PNR is valid.
+                </span>
               </p>
             </div>
           </div>
@@ -153,7 +182,9 @@ export default function TDRFilingWizard({ onSubmit }: TDRFilingWizardProps) {
               <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">
                 2
               </div>
-              <h4 className="font-semibold text-gray-900">Describe the Issue</h4>
+              <h4 className="font-semibold text-gray-900">
+                Describe the Issue
+              </h4>
             </div>
 
             <div>
@@ -164,11 +195,11 @@ export default function TDRFilingWizard({ onSubmit }: TDRFilingWizardProps) {
                 {tdrReasons.map((reason) => (
                   <button
                     key={reason}
-                    onClick={() => updateFormData('reason', reason)}
+                    onClick={() => updateFormData("reason", reason)}
                     className={`px-3 py-2 rounded-lg border-2 text-sm font-medium transition-all text-left ${
                       formData.reason === reason
-                        ? 'border-blue-500 bg-blue-50 text-blue-700'
-                        : 'border-gray-200 bg-white text-gray-600 hover:border-blue-200'
+                        ? "border-blue-500 bg-blue-50 text-blue-700"
+                        : "border-gray-200 bg-white text-gray-600 hover:border-blue-200"
                     }`}
                   >
                     {reason}
@@ -183,7 +214,7 @@ export default function TDRFilingWizard({ onSubmit }: TDRFilingWizardProps) {
               </label>
               <textarea
                 value={formData.description}
-                onChange={(e) => updateFormData('description', e.target.value)}
+                onChange={(e) => updateFormData("description", e.target.value)}
                 placeholder="Please provide detailed information about the issue (minimum 20 characters)..."
                 rows={4}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
@@ -202,7 +233,9 @@ export default function TDRFilingWizard({ onSubmit }: TDRFilingWizardProps) {
               <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">
                 3
               </div>
-              <h4 className="font-semibold text-gray-900">Bank Account Details</h4>
+              <h4 className="font-semibold text-gray-900">
+                Bank Account Details
+              </h4>
             </div>
 
             <div>
@@ -212,7 +245,12 @@ export default function TDRFilingWizard({ onSubmit }: TDRFilingWizardProps) {
               <input
                 type="text"
                 value={formData.bankAccount}
-                onChange={(e) => updateFormData('bankAccount', e.target.value.replace(/\D/g, ''))}
+                onChange={(e) =>
+                  updateFormData(
+                    "bankAccount",
+                    e.target.value.replace(/\D/g, ""),
+                  )
+                }
                 placeholder="Enter account number"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
@@ -226,7 +264,9 @@ export default function TDRFilingWizard({ onSubmit }: TDRFilingWizardProps) {
                 type="text"
                 maxLength={11}
                 value={formData.ifscCode}
-                onChange={(e) => updateFormData('ifscCode', e.target.value.toUpperCase())}
+                onChange={(e) =>
+                  updateFormData("ifscCode", e.target.value.toUpperCase())
+                }
                 placeholder="Enter IFSC code"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent uppercase"
               />
@@ -237,10 +277,21 @@ export default function TDRFilingWizard({ onSubmit }: TDRFilingWizardProps) {
 
             <div className="p-3 bg-yellow-50 rounded-lg border border-yellow-200">
               <p className="text-xs text-yellow-800 flex items-start gap-2">
-                <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                <svg
+                  className="w-4 h-4 mt-0.5 flex-shrink-0"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                    clipRule="evenodd"
+                  />
                 </svg>
-                <span>Ensure bank details match your ticket booking. Refunds will be credited to this account.</span>
+                <span>
+                  Ensure bank details match your ticket booking. Refunds will be
+                  credited to this account.
+                </span>
               </p>
             </div>
           </div>
@@ -281,16 +332,29 @@ export default function TDRFilingWizard({ onSubmit }: TDRFilingWizardProps) {
 
               <div className="p-3 bg-gray-50 rounded-lg">
                 <p className="text-xs text-gray-500 mb-1">IFSC Code</p>
-                <p className="font-semibold text-gray-900">{formData.ifscCode}</p>
+                <p className="font-semibold text-gray-900">
+                  {formData.ifscCode}
+                </p>
               </div>
             </div>
 
             <div className="p-3 bg-green-50 rounded-lg border border-green-200">
               <p className="text-xs text-green-800 flex items-start gap-2">
-                <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                <svg
+                  className="w-4 h-4 mt-0.5 flex-shrink-0"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clipRule="evenodd"
+                  />
                 </svg>
-                <span>Your TDR will be submitted immediately. You'll receive a confirmation with TDR number via SMS and email.</span>
+                <span>
+                  Your TDR will be submitted immediately. You&apos;ll receive a
+                  confirmation with TDR number via SMS and email.
+                </span>
               </p>
             </div>
           </div>
