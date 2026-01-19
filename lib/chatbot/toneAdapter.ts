@@ -74,6 +74,20 @@ export const ToneTemplates = {
         closing: "You're all set. Feel free to check back anytime.",
       },
     },
+    credited: {
+      high_value: {
+        opening: "Thank you for your patience during this process.",
+        status: "We're pleased to inform you that your refund is in the final stage and will be credited to your account very soon.",
+        timeline: "The amount is currently being transferred to your original payment method. You should see it reflected within 24-48 hours.",
+        closing: "We appreciate your understanding. If the amount doesn't appear within the expected timeframe, please reach out and we'll investigate immediately.",
+      },
+      low_value: {
+        opening: "Almost there!",
+        status: "Your refund is in the final stage and will hit your account soon.",
+        timeline: "Expect it within 24-48 hours to your original payment method.",
+        closing: "You'll get a confirmation once it's done. Thanks for your patience!",
+      },
+    },
     processing: {
       high_value: {
         opening: "Thank you for checking on your refund status.",
@@ -86,6 +100,20 @@ export const ToneTemplates = {
         status: "We're currently processing your request.",
         timeline: "It should be completed within 5-7 working days.",
         closing: "No worries — you'll get a confirmation soon.",
+      },
+    },
+    initiated: {
+      high_value: {
+        opening: "We're pleased to update you on your refund progress.",
+        status: "Your refund has been initiated and is now moving through the payment system. We're monitoring it to ensure smooth processing.",
+        timeline: "The refund should be completed and credited to your account within 3-5 working days.",
+        closing: "We'll keep you informed of any updates. Feel free to reach out if you need more information.",
+      },
+      low_value: {
+        opening: "Great news!",
+        status: "Your refund has been initiated and is in progress.",
+        timeline: "Should be in your account within 3-5 days.",
+        closing: "You'll get an update once it's credited!",
       },
     },
     rejected: {

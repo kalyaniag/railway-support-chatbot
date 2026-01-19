@@ -65,10 +65,16 @@ export function detectIntent(userMessage: string): string | null {
     }
   }
 
-  // PRIORITY 3: Refund-specific queries
+  // PRIORITY 3: Refund amount inquiry (without PNR)
+  if (/\b(my|i|me).*refund.*\b(\d+|rupees?|rs\.?)\b/i.test(normalizedMessage) ||
+      /\brefund.*\b(\d{3,5})\b/i.test(normalizedMessage)) {
+    return "refund_amount_inquiry";
+  }
+
+  // PRIORITY 4: Refund-specific queries
   if (/\b(refund|money|amount)\b/.test(normalizedMessage)) {
     // Refund calculator
-    if (/\b(calculate|how much|amount)\b/.test(normalizedMessage)) {
+    if (/\b(calculate|how much)\b/.test(normalizedMessage)) {
       return "refund_calculator";
     }
     // Refund history
@@ -85,7 +91,7 @@ export function detectIntent(userMessage: string): string | null {
     }
   }
 
-  // PRIORITY 4: TDR filing
+  // PRIORITY 5: TDR filing
   if (/\b(tdr|file|claim)\b/.test(normalizedMessage)) {
     return "tdr_filing";
   }

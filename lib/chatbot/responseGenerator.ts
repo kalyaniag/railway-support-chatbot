@@ -146,19 +146,30 @@ export function generateResponse(
 
         // Generate status-specific message with appropriate tone
         let statusMessage = '';
-        if (refundStatus.status === 'approved' || refundStatus.status === 'credited') {
+        
+        if (refundStatus.status === 'credited') {
+          // Final stage - money being transferred
+          statusMessage = generateTonedResponse(
+            'refundStatus',
+            'credited',
+            refundAmount
+          );
+        } else if (refundStatus.status === 'approved') {
+          // Approved but not yet credited
           statusMessage = generateTonedResponse(
             'refundStatus',
             'approved',
             refundAmount
           );
         } else if (refundStatus.status === 'processing' || refundStatus.status === 'initiated') {
+          // Still being processed
           statusMessage = generateTonedResponse(
             'refundStatus',
             'processing',
             refundAmount
           );
         } else if (refundStatus.status === 'rejected') {
+          // Rejected - need explanation
           statusMessage = generateTonedResponse(
             'refundStatus',
             'rejected',
@@ -166,8 +177,13 @@ export function generateResponse(
           );
         }
 
+        // Add amount context to message for clarity
+        const amountIndicator = refundAmount > 4000 
+          ? `\n\n💰 Refund Amount: ₹${refundAmount.toLocaleString('en-IN')}`
+          : `\n\n💰 Refund: ₹${refundAmount.toLocaleString('en-IN')}`;
+
         return {
-          text: statusMessage || `Refund status for PNR ${pnr}:`,
+          text: (statusMessage || `Refund status for PNR ${pnr}:`) + amountIndicator,
           richContent: {
             type: "refund-status",
             data: refundStatus,
@@ -194,6 +210,47 @@ export function generateResponse(
         data: mockRefundHistory,
       },
     };
+  }
+
+  // Handle refund amount inquiry (user mentions refund amount without PNR)
+  if (intentName === "refund_amount_inquiry") {
+    // Extract the refund amount from the message
+    const amountMatch = userMessage.match(/\b(\d{3,5})\b/);
+    let refundAmount = 0;
+    
+    if (amountMatch) {
+      refundAmount = parseInt(amountMatch[1], 10);
+    }
+
+    // Use tone adaptation based on amount
+    const toneConfig = getToneConfig(refundAmount);
+    
+    let response = "";
+    
+    if (refundAmount > 4000) {
+      // High-value: Empathetic, detailed, offers help
+      response = `I understand you're expecting a refund of ₹${refundAmount.toLocaleString('en-IN')}. This is a significant amount, and I want to help you track it properly.
+
+To check your refund status accurately, I'll need your 10-digit PNR number. This will allow me to:
+
+• Verify the exact refund amount
+• Check the current processing stage
+• Provide you with the expected credit date
+• Ensure everything is being handled correctly
+
+Please share your PNR, and I'll look into this right away. If you're concerned about any delays or have questions, I'm here to assist you through the process.`;
+    } else {
+      // Low-value: Friendly, efficient, direct
+      response = `Got it! You're expecting a refund of ₹${refundAmount.toLocaleString('en-IN')}.
+
+To check your refund status, I'll need your PNR number (10 digits).
+
+Just share it, and I'll pull up the details for you right away!
+
+Example: "Check refund for PNR 1234567890"`;
+    }
+
+    return { text: response };
   }
 
   // Handle refund calculator

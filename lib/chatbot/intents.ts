@@ -71,6 +71,16 @@ export const intents: Intent[] = [
     responses: [],
   },
   {
+    name: "refund_amount_inquiry",
+    patterns: [
+      /\bmy refund.*\b(\d+|rupees?|rs\.?)\b/i,
+      /\brefund.*\b(\d+|rupees?|rs\.?)\b/i,
+      /\b(\d+).*\brefund\b/i,
+      /\brefund.*amount.*\b(\d+)\b/i,
+    ],
+    responses: [],
+  },
+  {
     name: "cancellation",
     patterns: [
       /\b(cancel|cancellation|refund).*\b(ticket|booking|policy)\b/i,
