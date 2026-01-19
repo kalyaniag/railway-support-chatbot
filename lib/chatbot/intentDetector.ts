@@ -65,13 +65,19 @@ export function detectIntent(userMessage: string): string | null {
     }
   }
 
-  // PRIORITY 3: Refund amount inquiry (without PNR)
+  // PRIORITY 3: Simple "I want a refund" request (no PNR, no amount)
+  if (/^(i want|i need|can i get).*refund\.?$/i.test(normalizedMessage) ||
+      /^refund\.?$/i.test(normalizedMessage)) {
+    return "refund_request_initial";
+  }
+
+  // PRIORITY 4: Refund amount inquiry (without PNR)
   if (/\b(my|i|me).*refund.*\b(\d+|rupees?|rs\.?)\b/i.test(normalizedMessage) ||
       /\brefund.*\b(\d{3,5})\b/i.test(normalizedMessage)) {
     return "refund_amount_inquiry";
   }
 
-  // PRIORITY 4: Refund-specific queries
+  // PRIORITY 5: Refund-specific queries
   if (/\b(refund|money|amount)\b/.test(normalizedMessage)) {
     // Refund calculator
     if (/\b(calculate|how much)\b/.test(normalizedMessage)) {
@@ -91,17 +97,17 @@ export function detectIntent(userMessage: string): string | null {
     }
   }
 
-  // PRIORITY 5: TDR filing
+  // PRIORITY 6: TDR filing
   if (/\b(tdr|file|claim)\b/.test(normalizedMessage)) {
     return "tdr_filing";
   }
 
-  // PRIORITY 5: Alternative trains
+  // PRIORITY 7: Alternative trains
   if (/\b(alternative|other|different).*train\b/.test(normalizedMessage)) {
     return "alternative_trains";
   }
 
-  // PRIORITY 6: Partial cancellation
+  // PRIORITY 8: Partial cancellation
   if (
     /\bpartial.*cancel\b/.test(normalizedMessage) ||
     /\bcancel.*\b(one|some|few).*passenger\b/.test(normalizedMessage)

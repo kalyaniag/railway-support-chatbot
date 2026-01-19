@@ -7,7 +7,7 @@ import {
   mockRefundHistory,
   alternativeTrains,
 } from "./mockData";
-import { updateContext } from "./conversationContext";
+import { updateContext, setConversationState, getConversationState } from "./conversationContext";
 import {
   getToneConfig,
   generateTonedResponse,
@@ -55,6 +55,89 @@ export function generateResponse(
     if (intent && intent.responses.length > 0) {
       return { text: intent.responses[0] };
     }
+  }
+
+  // Handle multi-turn refund request dialogue
+  if (intentName === "refund_request_initial") {
+    // This is a high-value scenario - simulate checking a booking
+    // In production, this would get actual PNR from recent context
+    const mockRefundAmount = 10000; // High-value amount
+    
+    // Set conversation state to await confirmation
+    setConversationState({
+      awaitingConfirmation: true,
+      confirmationType: 'refund_request',
+      pendingRefundAmount: mockRefundAmount,
+      pendingRefundPNR: '1234567890', // Would come from context
+      refundInitiated: false,
+    });
+    
+    return {
+      text: `Okay… I can help you with that.\nJust give me a moment to look into your booking properly.
+
+*[checking...]*
+
+I've checked the details.\nAlright. Thank you for trusting me with this.\nThe refundable amount for this booking comes to ₹${mockRefundAmount.toLocaleString('en-IN')}.
+
+I know that's not a small amount, so I want to reassure you —\nonce I submit this, I'll make sure it goes through the proper checks and doesn't get stuck midway.
+
+Before I proceed, are you comfortable if I place the refund request now?`,
+    };
+  }
+
+  // Handle refund request confirmation
+  if (intentName === "refund_request_confirm") {
+    const state = getConversationState();
+    
+    if (state?.pendingRefundAmount) {
+      // Update state to show refund initiated
+      setConversationState({
+        ...state,
+        refundInitiated: true,
+        awaitingConfirmation: true,
+        confirmationType: 'travel_credit',
+      });
+      
+      return {
+        text: `Okay. I've gone ahead and placed it.
+
+Right now, it's in processing.\nYou don't need to do anything further — I'll keep this on track from here.
+
+It usually takes a few working days to reflect, but if it takes longer than expected, I'll flag it and let you know. You won't be left guessing.
+
+**I have escalated your case.**
+
+While this is being handled, can I do something small for you?\nI can add a travel credit to your account — not as a replacement, just as a gesture while you wait.
+
+Would you like that?`,
+      };
+    }
+    
+    return {
+      text: "I'm sorry, I seem to have lost track of the refund request. Could you please start again?",
+    };
+  }
+
+  // Handle travel credit acceptance
+  if (intentName === "travel_credit_accept") {
+    const state = getConversationState();
+    
+    if (state?.refundInitiated) {
+      // Clear conversation state as dialogue is complete
+      setConversationState(null);
+      
+      return {
+        text: `I've added it for you.
+
+And just so you know — if at any point you feel unsure or just want an update, you can come back here and ask.\nI'll be here, and I'll check it for you.
+
+Is there anything else I can help you with today?`,
+      };
+    }
+    
+    return {
+      text: "Thank you! Is there anything else I can help you with?",
+    };
   }
 
   // PRIORITY 2: PNR & Train Status Features

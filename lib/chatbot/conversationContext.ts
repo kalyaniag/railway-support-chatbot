@@ -12,6 +12,14 @@ export interface ConversationContext {
   lastTrainNumber: string | null;
   lastTopic: string | null; // 'refund', 'booking', 'train', 'tdr', etc.
   lastData: unknown; // Last rich content data shown
+  conversationState: {
+    awaitingConfirmation?: boolean;
+    confirmationType?: 'refund_request' | 'travel_credit' | null;
+    pendingRefundAmount?: number;
+    pendingRefundPNR?: string;
+    refundInitiated?: boolean;
+    travelCreditOffered?: boolean;
+  } | null;
   conversationHistory: Array<{
     userMessage: string;
     intent: string;
@@ -31,6 +39,7 @@ function loadContextFromStorage(): ConversationContext {
       lastTrainNumber: null,
       lastTopic: null,
       lastData: null,
+      conversationState: null,
       conversationHistory: [],
     };
   }
@@ -52,6 +61,7 @@ function loadContextFromStorage(): ConversationContext {
     lastTrainNumber: null,
     lastTopic: null,
     lastData: null,
+    conversationState: null,
     conversationHistory: [],
   };
 }
@@ -123,6 +133,7 @@ export function clearContext() {
     lastTrainNumber: null,
     lastTopic: null,
     lastData: null,
+    conversationState: null,
     conversationHistory: [],
   };
 
@@ -182,6 +193,17 @@ export function getContextualIntent(message: string): string | null {
 
   // Handle affirmative responses (yes, ok, sure)
   if (/^(yes|yeah|sure|ok|okay|yep)\b/i.test(normalizedMessage)) {
+    // Check if awaiting refund confirmation
+    if (context.conversationState?.awaitingConfirmation && 
+        context.conversationState?.confirmationType === 'refund_request') {
+      return "refund_request_confirm";
+    }
+    // Check if awaiting travel credit confirmation  
+    if (context.conversationState?.awaitingConfirmation &&
+        context.conversationState?.confirmationType === 'travel_credit') {
+      return "travel_credit_accept";
+    }
+    
     if (context.lastIntent === "tdr_filing") {
       return "tdr_filing_continue";
     }
@@ -191,4 +213,21 @@ export function getContextualIntent(message: string): string | null {
   }
 
   return null;
+}
+
+// Set conversation state for multi-turn dialogues
+export function setConversationState(state: ConversationContext['conversationState']) {
+  globalContext.conversationState = state;
+  saveContextToStorage(globalContext);
+}
+
+// Get current conversation state
+export function getConversationState() {
+  return globalContext.conversationState;
+}
+
+// Clear conversation state
+export function clearConversationState() {
+  globalContext.conversationState = null;
+  saveContextToStorage(globalContext);
 }

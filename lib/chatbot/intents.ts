@@ -81,6 +81,27 @@ export const intents: Intent[] = [
     responses: [],
   },
   {
+    name: "refund_request_initial",
+    patterns: [
+      /^i want.*refund$/i,
+      /^i need.*refund$/i,
+      /^refund$/i,
+      /^can i get.*refund\??$/i,
+      /^i want my refund$/i,
+    ],
+    responses: [],
+  },
+  {
+    name: "refund_request_confirm",
+    patterns: [],
+    responses: [],
+  },
+  {
+    name: "travel_credit_accept",
+    patterns: [],
+    responses: [],
+  },
+  {
     name: "cancellation",
     patterns: [
       /\b(cancel|cancellation|refund).*\b(ticket|booking|policy)\b/i,
