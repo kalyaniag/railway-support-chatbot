@@ -8,6 +8,14 @@ import {
   alternativeTrains,
 } from "./mockData";
 import { updateContext } from "./conversationContext";
+import {
+  getToneConfig,
+  generateTonedResponse,
+  getEmpathyPhrase,
+  getAcknowledgment,
+  getClosingPhrase,
+  isHighValueRefund,
+} from "./toneAdapter";
 
 export function generateResponse(
   intentName: string | null,
@@ -25,6 +33,13 @@ export function generateResponse(
       text: fallbackResponses[
         Math.floor(Math.random() * fallbackResponses.length)
       ],
+    };
+  }
+
+  // Handle out-of-context questions
+  if (intentName === "out_of_context") {
+    return {
+      text: "I apologize, but I can only assist with IRCTC and Indian Railways related queries. I'm designed to help with:\n\n• Train bookings and PNR status\n• Ticket cancellations and refunds\n• Train schedules and availability\n• TDR filing and complaints\n• Tatkal booking information\n• Railway rules and policies\n\nHow may I help you with your railway travel needs?",
     };
   }
 
@@ -125,8 +140,34 @@ export function generateResponse(
       });
 
       if (refundStatus) {
+        // Calculate refund amount for tone adaptation
+        const refundAmount = refundStatus.amount || 0;
+        const toneConfig = getToneConfig(refundAmount);
+
+        // Generate status-specific message with appropriate tone
+        let statusMessage = '';
+        if (refundStatus.status === 'approved' || refundStatus.status === 'credited') {
+          statusMessage = generateTonedResponse(
+            'refundStatus',
+            'approved',
+            refundAmount
+          );
+        } else if (refundStatus.status === 'processing' || refundStatus.status === 'initiated') {
+          statusMessage = generateTonedResponse(
+            'refundStatus',
+            'processing',
+            refundAmount
+          );
+        } else if (refundStatus.status === 'rejected') {
+          statusMessage = generateTonedResponse(
+            'refundStatus',
+            'rejected',
+            refundAmount
+          );
+        }
+
         return {
-          text: `Refund status for PNR ${pnr}:`,
+          text: statusMessage || `Refund status for PNR ${pnr}:`,
           richContent: {
             type: "refund-status",
             data: refundStatus,
@@ -157,8 +198,9 @@ export function generateResponse(
 
   // Handle refund calculator
   if (intentName === "refund_calculator") {
+    // Use neutral tone initially - actual tone adaptation happens when user enters fare
     return {
-      text: "Calculate your estimated refund amount based on ticket type and cancellation timing:",
+      text: "I'll help you calculate your refund. Let me know your ticket fare and cancellation details, and I'll provide an accurate estimate based on IRCTC policy.",
       richContent: {
         type: "refund-calculator",
       },
@@ -167,8 +209,9 @@ export function generateResponse(
 
   // Handle TDR filing
   if (intentName === "tdr_filing") {
+    // Default to moderate tone unless we know refund amount from context
     return {
-      text: "TDR (Ticket Deposit Receipt) is used for refund claims when:\n- Train is cancelled or rescheduled\n- Train delayed by more than 3 hours\n- Services not provided (AC/food/water)\n- Booking errors\n\nFollow the steps below to file:",
+      text: "I can guide you through filing a TDR (Ticket Deposit Receipt).\n\nA TDR helps you claim refunds when:\n• Train is cancelled or rescheduled\n• Train delayed by more than 3 hours\n• Services not provided (AC/food/water)\n• Booking errors\n\nLet's get started with the process:",
       richContent: {
         type: "tdr-filing",
       },

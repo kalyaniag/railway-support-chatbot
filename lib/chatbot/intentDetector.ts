@@ -12,6 +12,25 @@ export function detectIntent(userMessage: string): string | null {
     }
   }
 
+  // Check for out-of-context questions (food, weather, general topics not related to IRCTC)
+  const outOfContextPatterns = [
+    /\b(cook|dinner|lunch|breakfast|recipe|food|eat|meal)\b/i,
+    /\b(weather|temperature|rain|sunny|climate)\b/i,
+    /\b(movie|film|music|song|game|sport)\b/i,
+    /\b(shopping|buy|purchase|product)\b(?!.*ticket)/i, // Allow ticket purchase
+    /\b(health|doctor|medicine|hospital)\b/i,
+    /\b(news|politics|election)\b/i,
+    /\b(job|career|interview|salary)\b/i,
+    /\b(dating|relationship|love|marriage)\b/i,
+    /\b(homework|assignment|study)\b/i,
+  ];
+
+  for (const pattern of outOfContextPatterns) {
+    if (pattern.test(normalizedMessage)) {
+      return "out_of_context";
+    }
+  }
+
   // Priority order: Check more specific intents first before generic ones
 
   // PRIORITY 1: Detailed PNR check with number extraction

@@ -26,12 +26,19 @@ You are a full-service travel assistant capable of helping with:
 - Account and payment issues
 - General railway information
 
+CRITICAL SCOPE LIMITATION:
+You ONLY assist with IRCTC and Indian Railways related queries. If a user asks about anything OUTSIDE this scope (such as cooking, food recipes, weather, movies, shopping, health, news, jobs, relationships, etc.), you MUST politely decline and redirect them to railway-related topics.
+
+Response for out-of-scope questions:
+"I apologize, but I can only assist with IRCTC and Indian Railways related queries. I'm designed to help with train bookings, PNR status, cancellations, refunds, TDR filing, and other railway services. How may I help you with your railway travel needs?"
+
 TONE & BEHAVIOR:
 - Helpful, friendly, and professional
 - Clear and concise responses
 - Provide actionable information
 - Use simple language
 - Be patient with follow-up questions
+- STRICTLY stay within IRCTC/railway domain
 
 MOCK DATABASE FOR DEMONSTRATION:
 
@@ -125,6 +132,27 @@ Keep responses concise but complete. Use bullet points for lists.`;
 function detectUserIntent(message: string): string[] {
   const intents: string[] = [];
   const lowerMessage = message.toLowerCase();
+
+  // Check for out-of-context questions FIRST
+  const outOfContextPatterns = [
+    /\b(cook|cooking|dinner|lunch|breakfast|recipe|food|eat|meal|dish|cuisine)\b/i,
+    /\b(weather|temperature|rain|sunny|climate|forecast)\b/i,
+    /\b(movie|film|cinema|music|song|game|sport|cricket|football)\b/i,
+    /\b(shopping|buy|purchase|product|sale)\b(?!.*ticket)/i,
+    /\b(health|doctor|medicine|hospital|disease|sick)\b/i,
+    /\b(news|politics|election|government)\b(?!.*railway)/i,
+    /\b(job|career|interview|salary|employment)\b/i,
+    /\b(dating|relationship|love|marriage|wedding)\b/i,
+    /\b(homework|assignment|study|exam|school|college)\b(?!.*railway)/i,
+    /\b(stock|invest|crypto|bitcoin|share)\b/i,
+  ];
+
+  for (const pattern of outOfContextPatterns) {
+    if (pattern.test(lowerMessage)) {
+      intents.push("out_of_context");
+      return intents; // Return immediately, no need to check other intents
+    }
+  }
 
   // PNR related
   if (
@@ -338,6 +366,15 @@ export async function POST(request: NextRequest) {
         { error: "Message is required" },
         { status: 400 },
       );
+    }
+
+    // Handle out-of-context questions immediately
+    if (intents.includes("out_of_context")) {
+      return NextResponse.json({
+        message:
+          "I apologize, but I can only assist with IRCTC and Indian Railways related queries. I'm designed to help with:\n\n• Train bookings and PNR status\n• Ticket cancellations and refunds\n• Train schedules and availability\n• TDR filing and complaints\n• Tatkal booking information\n• Railway rules and policies\n\nHow may I help you with your railway travel needs?",
+        richContent: null,
+      });
     }
 
     let contextInfo = "";
