@@ -1,6 +1,7 @@
 "use client";
 
 import { Ticket, Search, IndianRupee, Zap } from "lucide-react";
+import DishaAvatar from "./DishaAvatar";
 
 interface QuickActionsProps {
   onQuickAction: (question: string) => void;
@@ -25,9 +26,8 @@ export default function QuickActions({ onQuickAction }: QuickActionsProps) {
   return (
     <div className="mb-6 px-3">
       <div className="text-center mb-6">
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 mb-4 shadow-xl relative">
-          <span className="text-4xl">🤖</span>
-          <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white animate-pulse"></div>
+        <div className="inline-flex items-center justify-center mb-4 relative">
+          <DishaAvatar size="xl" showRing={true} />
         </div>
         <h2 className="text-2xl font-bold text-gray-900 mb-2 px-4">
           Namaste! I&apos;m Disha 2.0

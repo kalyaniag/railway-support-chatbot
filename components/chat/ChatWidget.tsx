@@ -12,7 +12,7 @@ export default function ChatWidget() {
     <>
       {/* Floating Chat Window - Responsive */}
       {isOpen && (
-        <div className="fixed bottom-4 right-4 z-50 w-[calc(100vw-2rem)] sm:w-[480px] md:w-[520px] h-[calc(100vh-6rem)] sm:h-[680px] max-h-[750px] bg-white rounded-2xl shadow-2xl overflow-hidden border-2 border-blue-100 animate-in slide-in-from-bottom-5 duration-300">
+        <div className="fixed bottom-4 right-4 z-50 w-[calc(100vw-2rem)] sm:w-[480px] md:w-[520px] h-[calc(100vh-2rem)] bg-white rounded-2xl shadow-2xl overflow-hidden border-2 border-blue-100 animate-in slide-in-from-bottom-5 duration-300">
           {/* Chat Header */}
           <div className="bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 text-white px-4 sm:px-5 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">

@@ -1,7 +1,7 @@
 "use client";
 
 interface DishaAvatarProps {
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl";
   showRing?: boolean;
   showText?: boolean;
 }
@@ -15,6 +15,7 @@ export default function DishaAvatar({
     sm: { outer: "w-9 h-9", inner: "w-7 h-7", ring: 2, text: "text-[4px]" },
     md: { outer: "w-11 h-11", inner: "w-9 h-9", ring: 3, text: "text-[5px]" },
     lg: { outer: "w-16 h-16", inner: "w-14 h-14", ring: 4, text: "text-[7px]" },
+    xl: { outer: "w-20 h-20", inner: "w-18 h-18", ring: 4, text: "text-[8px]" },
   };
 
   const s = sizes[size];
